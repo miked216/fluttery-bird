@@ -8,7 +8,7 @@
   <version>1</version>
 
   <groupId>com.google.games.bloopyfish</groupId>
-  <artifactId>bloopy-fish</artifactId>
+  <artifactId>flapping-bird</artifactId>
 
   <properties>
     <appengine.app.name>flapping-bird</appengine.app.name>

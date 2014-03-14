@@ -1,4 +1,4 @@
-#eclipse files
+# Eclipse files
 .project
 .settings
 
@@ -7,6 +7,7 @@
 Thumbs.db
 Desktop.ini
 npm-debug.log
+*~
 
 # project specific ignore
 node_modules/
@@ -15,9 +16,7 @@ node_modules/
 *.sw*
 
 *.sublime-project
-
-clumsy-bird.sublime-workspace
-bower_components
+*.sublime-workspace
 
 # Maven output
 target/**
