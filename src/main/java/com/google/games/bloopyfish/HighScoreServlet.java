@@ -47,7 +47,11 @@ public class HighScoreServlet extends HttpServlet {
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
     // HACK(chrsmith): Placeholder until I finish the demo app.
-    logger.log(Level.SEVERE, "Error: Non-admin attempting to update highscore list.");
+    try {
+      throw new RuntimeException();
+    } catch (Exception ex) {
+      logger.log(Level.SEVERE, "Error: Non-admin attempting to update highscore list.", ex);
+    }
 
     List<HighScore> allTimeScores = new ArrayList<HighScore>();
     List<HighScore> past24HoursScores = new ArrayList<HighScore>();
