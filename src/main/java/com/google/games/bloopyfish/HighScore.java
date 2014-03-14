@@ -15,8 +15,10 @@ public class HighScore {
   private final String player;
 
   public static HighScore fromEntity(Entity scoreEntity) {
-    return new HighScore((Long) scoreEntity.getProperty("score"),
-        (Date) scoreEntity.getProperty("date"), (String) scoreEntity.getProperty("player"));
+    return new HighScore(
+        (Long) scoreEntity.getProperty("score"),
+        (Date) scoreEntity.getProperty("date"),
+        (String) scoreEntity.getProperty("player"));
   }
 
   public HighScore(long score, Date date, String player) {
@@ -37,4 +39,3 @@ public class HighScore {
     return player;
   }
 }
-

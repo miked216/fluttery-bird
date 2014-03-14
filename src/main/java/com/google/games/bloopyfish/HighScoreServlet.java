@@ -45,6 +45,10 @@ public class HighScoreServlet extends HttpServlet {
    */
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+    // HACK(chrsmith): Placeholder until I finish the demo app.
+    logger.log(Level.SEVERE, "Error: Non-admin attempting to update highscore list.");
+
     List<HighScore> allTimeScores = new ArrayList<HighScore>();
     List<HighScore> past24HoursScores = new ArrayList<HighScore>();
 
@@ -58,7 +62,7 @@ public class HighScoreServlet extends HttpServlet {
       allTimeScores.add(HighScore.fromEntity(score));
     }
     logger.log(Level.FINE, "All-time top 10 scores in datastore: " + allTimeScores);
-    
+
     // Query for the list of the top 10 scores today
     // TODO(joannasmith): Sorting of this list by score might be off due to filtering by date.
     Date now = new Date();
@@ -75,8 +79,7 @@ public class HighScoreServlet extends HttpServlet {
       past24HoursScores.add(HighScore.fromEntity(score));
     }
     logger.log(Level.FINE, "Today's top 10 scores in datastore: " + past24HoursScores);
-    
-    
+
     // TODO(joannasmith): Consider extracting these into a ScoreResponse object for easier JSONing
     resp.setContentType("text/json");
     resp.getWriter().print("[");
@@ -85,7 +88,7 @@ public class HighScoreServlet extends HttpServlet {
     resp.getWriter().print("\"today\":" + gson.toJson(past24HoursScores));
     resp.getWriter().print("]");
   }
-  
+
   /**
    * Exposed as `POST /highscore?score=[integer]`.
    *     Saves the provided score, along with a timestamp and the name of the authenticated user
@@ -113,7 +116,7 @@ public class HighScoreServlet extends HttpServlet {
       return;
     }
     logger.log(Level.FINE, "Score: " + gameScore);
-    
+
     // Create an entity to store the score data in the AppEngine Datastore.
     Entity score = new Entity("HighScore");
     score.setProperty("player", name);
@@ -124,4 +127,3 @@ public class HighScoreServlet extends HttpServlet {
     datastoreService.put(score);
   }
 }
-
