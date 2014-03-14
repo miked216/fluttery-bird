@@ -46,7 +46,6 @@ public class HighScoreServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-    // HACK(chrsmith): Placeholder until I finish the demo app.
 
     List<HighScore> allTimeScores = new ArrayList<HighScore>();
     List<HighScore> past24HoursScores = new ArrayList<HighScore>();
