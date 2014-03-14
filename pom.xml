@@ -11,7 +11,7 @@
   <artifactId>bloopy-fish</artifactId>
 
   <properties>
-    <appengine.app.name>bloopy-fish</appengine.app.name>
+    <appengine.app.name>flapping-bird</appengine.app.name>
     <appengine.app.version>1</appengine.app.version>
     <appengine.target.version>1.8.8</appengine.target.version>
     <jersey.version>1.17.1</jersey.version>
