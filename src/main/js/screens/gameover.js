@@ -7,7 +7,12 @@ game.GameOverScreen = me.ScreenObject.extend({
 
   onResetEvent: function() {
     me.audio.play("lose");
-    //save section
+
+    // Issue new high-score submission.
+    // TODO(chrsmith): Need token to prevent hacking.
+    this.postToUrl("/highscore?score=" + game.data.steps);
+
+    // Save local data.
     this.savedData = {
       score: game.data.score,
       steps: game.data.steps
@@ -105,5 +110,21 @@ game.GameOverScreen = me.ScreenObject.extend({
     me.game.world.removeChild(this.ground);
     this.font = null;
     me.audio.stop("theme");
+  },
+
+  /**
+   * Function to issue a POST request to the given URL.
+   */
+  postToUrl: function(url) {
+    // Creating an XML HttpRequest object like a barbarian.
+    function createXMLHttpRequest() {
+       try { return new XMLHttpRequest(); } catch(e) {}
+       try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) {}
+       return null;
+     }
+
+    var xhReq = createXMLHttpRequest();
+    xhReq.open("POST", url, true);
+    xhReq.send(null);
   }
 });

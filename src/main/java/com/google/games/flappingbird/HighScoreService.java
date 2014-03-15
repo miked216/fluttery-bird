@@ -70,6 +70,12 @@ public class HighScoreService {
     String name = (user != null) ? user.getNickname() : "Anonymous";
     logger.log(Level.FINE, "User: " + name);
 
+    // TODO(chris): User a proper escaping library.
+    name = name
+        .replace('&', ' ')
+        .replace('<', ' ')
+        .replace('>', ' ')
+        .replace("script", "");
     // Create an entity to store the score data in the AppEngine Datastore.
     Entity score = new Entity("HighScore");
     score.setProperty("player", name);
