@@ -10,6 +10,10 @@
   </head>
 
   <body>
+    <p>
+      Welcome <span id="userName"></span>! | <a id="logInUrl" href="">Log In</a><a id="logOutUrl" href="">Log Out</a>
+    </p>
+
     <!-- Canvas placeholder -->
     <div id="screen"></div>
 
@@ -21,6 +25,29 @@
     <script type="text/javascript">
       window.onReady(function onReady() {
         game.onload();
+
+        // Set log-in URL as appropriate.
+        function getUserInfo() {
+          var xmlHttp = null;
+          xmlHttp = new XMLHttpRequest();
+          xmlHttp.open("GET", "/user", false);
+          xmlHttp.send(null);
+          return xmlHttp.responseText;
+        }
+
+        var userNameSpan = document.getElementById('userName');
+        var logInAnchor = document.getElementById('logInUrl');
+        var logOutAnchor = document.getElementById('logOutUrl');
+
+        var userInfo = eval(getUserInfo());
+        userNameSpan.innerText = userInfo.userName;
+        logInAnchor.href = userInfo.logInUrl;
+        logOutAnchor.href = userInfo.logOutUrl;
+        if (userInfo.isLoggedIn) {
+          logInAnchor.style.display = 'none';
+        } else {
+          logOutAnchor.style.display = 'none';
+        }
 
         // Mobile browser hacks
         if (me.device.isMobile && !navigator.isCocoonJS) {
@@ -43,6 +70,5 @@
         }
       });
     </script>
-
   </body>
 </html>
