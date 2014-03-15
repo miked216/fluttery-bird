@@ -37,53 +37,25 @@ public class HighScoreServlet extends HttpServlet {
   /**
    * Exposed as `GET /highscore`.
    *     Returns the list of all time high scores and the list of high scores from the past
-   *     24 hours. Response is a JSON object structured as:
+   *     hour. Response is a JSON object structured as:
    *         ["all":[{"score":0,"date":"Date toString","player":"nickname"}],
-   *          "today":[]]
+   *          "hour":[]]
    *
    * @throws IOException if the response fails to fetch its writer
    */
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    HighScoreService hsService = new HighScoreService();
 
-
-    List<HighScore> allTimeScores = new ArrayList<HighScore>();
-    List<HighScore> past24HoursScores = new ArrayList<HighScore>();
-
-    // Query for the list of the top 10 all-time scores
     DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
-    Query allTimeQuery =
-        new Query("HighScore").addSort("score", Query.SortDirection.DESCENDING);
-    List<Entity> scoreEntities = datastoreService.prepare(allTimeQuery)
-        .asList(FetchOptions.Builder.withLimit(10));
-    for (Entity score : scoreEntities) {
-      allTimeScores.add(HighScore.fromEntity(score));
-    }
-    logger.log(Level.FINE, "All-time top 10 scores in datastore: " + allTimeScores);
-
-    // Query for the list of the top 10 scores today
-    // TODO(joannasmith): Sorting of this list by score might be off due to filtering by date.
-    Date now = new Date();
-    Date past24Hours = new Date(now.getTime() - (1000*60*60*24));
-    Query.Filter filter =
-        new Query.FilterPredicate("date", Query.FilterOperator.GREATER_THAN_OR_EQUAL, past24Hours);
-    Query past24Query = new Query("HighScore")
-        .setFilter(filter)
-        .addSort("date", Query.SortDirection.DESCENDING)
-        .addSort("score", Query.SortDirection.DESCENDING);
-    scoreEntities = datastoreService.prepare(past24Query)
-        .asList(FetchOptions.Builder.withLimit(10));
-    for (Entity score : scoreEntities) {
-      past24HoursScores.add(HighScore.fromEntity(score));
-    }
-    logger.log(Level.FINE, "Today's top 10 scores in datastore: " + past24HoursScores);
+    HighScoreSnapshot currentHighScores = hsService.getHighScoreSnapshot(datastoreService);
 
     // TODO(joannasmith): Consider extracting these into a ScoreResponse object for easier JSONing
     resp.setContentType("text/json");
     resp.getWriter().print("[");
-    resp.getWriter().print("\"all\":" + gson.toJson(allTimeScores));
+    resp.getWriter().print("\"all\":" + gson.toJson(currentHighScores.getAllTime()));
     resp.getWriter().println(",");
-    resp.getWriter().print("\"today\":" + gson.toJson(past24HoursScores));
+    resp.getWriter().print("\"hour\":" + gson.toJson(currentHighScores.getPastHour()));
     resp.getWriter().print("]");
   }
 
@@ -95,33 +67,18 @@ public class HighScoreServlet extends HttpServlet {
    */
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp) {
-    DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
-    UserService userService = UserServiceFactory.getUserService();
-    User user = userService.getCurrentUser();
-    // If the user has signed in, we use their registered nickname, otherwise we default to Anon.
-    String name = "Anonymous";
-    if (user != null) {
-      name = user.getNickname();
-    }
-    logger.log(Level.FINE, "User: " + name);
-
-    // If the provided score parameter isn't an integer, we simply don't write the score.
-    long gameScore = 0;
+    // If the provided score parameter isn't an integer, ignore.
+    int gameScore = 0;
     try {
-      gameScore = Long.valueOf(req.getParameter("score"));
+      gameScore = Integer.valueOf(req.getParameter("score"));
     } catch (NumberFormatException e) {
-      // The provided score isn't an integer, so this is a graceful fail
       return;
     }
-    logger.log(Level.FINE, "Score: " + gameScore);
 
-    // Create an entity to store the score data in the AppEngine Datastore.
-    Entity score = new Entity("HighScore");
-    score.setProperty("player", name);
-    score.setProperty("score", gameScore);
-    score.setProperty("date", new Date());
-    logger.log(Level.FINE, "HighScore Entity: " + score);
+    HighScoreService hsService = new HighScoreService();
 
-    datastoreService.put(score);
+    DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+    UserService userService = UserServiceFactory.getUserService();
+    hsService.addNewScore(datastoreService, userService, gameScore);
   }
 }
