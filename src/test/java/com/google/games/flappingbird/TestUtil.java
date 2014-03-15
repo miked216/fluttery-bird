@@ -1,4 +1,4 @@
-package com.google.games.bloopyfish;
+package com.google.games.flappingbird;
 
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;

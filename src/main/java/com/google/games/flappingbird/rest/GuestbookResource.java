@@ -1,11 +1,11 @@
-package com.google.games.bloopyfish.rest;
+package com.google.games.flappingbird.rest;
 
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.games.bloopyfish.domain.Greeting;
-import com.google.games.bloopyfish.domain.GuestbookResponse;
-import com.google.games.bloopyfish.domain.UserServiceInfo;
+import com.google.games.flappingbird.domain.Greeting;
+import com.google.games.flappingbird.domain.GuestbookResponse;
+import com.google.games.flappingbird.domain.UserServiceInfo;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

@@ -1,4 +1,4 @@
-package com.google.games.bloopyfish.domain;
+package com.google.games.flappingbird.domain;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.users.User;

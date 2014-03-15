@@ -1,4 +1,4 @@
-package com.google.games.bloopyfish.domain;
+package com.google.games.flappingbird.domain;
 
 import java.util.List;
 

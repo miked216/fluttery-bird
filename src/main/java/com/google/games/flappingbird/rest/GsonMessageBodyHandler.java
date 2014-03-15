@@ -1,4 +1,4 @@
-package com.google.games.bloopyfish.rest;
+package com.google.games.flappingbird.rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

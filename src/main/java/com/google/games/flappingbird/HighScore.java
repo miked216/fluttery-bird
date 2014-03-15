@@ -1,4 +1,4 @@
-package com.google.games.bloopyfish;
+package com.google.games.flappingbird;
 
 import com.google.appengine.api.datastore.Entity;
 

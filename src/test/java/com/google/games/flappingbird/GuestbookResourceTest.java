@@ -1,14 +1,14 @@
-package com.google.games.bloopyfish;
+package com.google.games.flappingbird;
 
-import static com.google.games.bloopyfish.TestUtil.getMockedJsonRequest;
-import static com.google.games.bloopyfish.TestUtil.getMockedServletResponse;
+import static com.google.games.flappingbird.TestUtil.getMockedJsonRequest;
+import static com.google.games.flappingbird.TestUtil.getMockedServletResponse;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.*;
 
-import com.google.games.bloopyfish.config.Resources;
-import com.google.games.bloopyfish.domain.Greeting;
-import com.google.games.bloopyfish.domain.GuestbookResponse;
+import com.google.games.flappingbird.config.Resources;
+import com.google.games.flappingbird.domain.Greeting;
+import com.google.games.flappingbird.domain.GuestbookResponse;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;

@@ -1,7 +1,7 @@
-package com.google.games.bloopyfish.config;
+package com.google.games.flappingbird.config;
 
-import com.google.games.bloopyfish.rest.GsonMessageBodyHandler;
-import com.google.games.bloopyfish.rest.GuestbookResource;
+import com.google.games.flappingbird.rest.GsonMessageBodyHandler;
+import com.google.games.flappingbird.rest.GuestbookResource;
 
 import java.util.HashSet;
 import java.util.Set;

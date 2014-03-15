@@ -1,4 +1,4 @@
-package com.google.games.bloopyfish;
+package com.google.games.flappingbird;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -8,7 +8,7 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.games.bloopyfish.HighScore;
+import com.google.games.flappingbird.HighScore;
 import com.google.gson.Gson;
 
 import java.io.IOException;
