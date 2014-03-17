@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>High Scores</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="index-min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="highscores-min.css">
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1 style="text-align: center">High Scores</h1>
+
+    <!-- TODO(chrsmith): Just use AngularJS and make this "sizzle". But in the
+	 interest of time we'll build this like it's 1999. -->
+    <table class="highscoretable">
+      <tr><th></th><th>All Time</th><th>Past Hour</th></tr>
+      <tr><td>#1</td><td id="all-time-1"></td><td id="hour-1"></td></tr>
+      <tr><td>#2</td><td id="all-time-2"></td><td id="hour-2"></td></tr>
+      <tr><td>#3</td><td id="all-time-3"></td><td id="hour-3"></td></tr>
+      <tr><td>#4</td><td id="all-time-4"></td><td id="hour-4"></td></tr>
+      <tr><td>#5</td><td id="all-time-5"></td><td id="hour-5"></td></tr>
+      <tr><td>#6</td><td id="all-time-6"></td><td id="hour-6"></td></tr>
+      <tr><td>#7</td><td id="all-time-7"></td><td id="hour-7"></td></tr>
+      <tr><td>#8</td><td id="all-time-8"></td><td id="hour-8"></td></tr>
+      <tr><td>#9</td><td id="all-time-9"></td><td id="hour-9"></td></tr>
+      <tr><td>#10</td><td id="all-time-10"></td><td id="hour-10"></td></tr>
+    </table>
+
+    <script type="text/javascript">
+      window.addEventListener('load', function() {
+        // TODO(chrsmith): Refactor this into a JS file, since it is duplicated.
+        function getHighScores() {
+          var xmlHttp = null;
+          xmlHttp = new XMLHttpRequest();
+          xmlHttp.open("GET", "/highscore", false);
+          xmlHttp.send(null);
+          return xmlHttp.responseText;
+        }
+
+        var highScoreInfo = eval(getHighScores());
+
+        var allTimeScores = highScoreInfo["all"];
+        for (var i = 0; i < allTimeScores.length; i++) {
+	  var highScore = allTimeScores[i];
+	  var text = highScore['player'] + ' <b>' + highScore['score'] + '</b>'; 
+          document.getElementById('all-time-' + (i+1)).innerHTML = text;
+        }
+
+        var hourlyScores = highScoreInfo["hour"];
+        for (var i = 0; i < allTimeScores.length; i++) {
+	  var highScore = hourlyScores[i];
+	  var text = highScore['player'] + ' <b>' + highScore['score'] + '</b>'; 
+          document.getElementById('hour-' + (i+1)).innerHTML = text;
+        }
+      }, false);
+    </script>
+  </body>
+</html>

@@ -37,9 +37,7 @@ public class HighScoreServlet extends HttpServlet {
   /**
    * Exposed as `GET /highscore`.
    *     Returns the list of all time high scores and the list of high scores from the past
-   *     hour. Response is a JSON object structured as:
-   *         ["all":[{"score":0,"date":"Date toString","player":"nickname"}],
-   *          "hour":[]]
+   *     hour.
    *
    * @throws IOException if the response fails to fetch its writer
    */
@@ -52,11 +50,11 @@ public class HighScoreServlet extends HttpServlet {
 
     // TODO(joannasmith): Consider extracting these into a ScoreResponse object for easier JSONing
     resp.setContentType("text/json");
-    resp.getWriter().print("[");
-    resp.getWriter().print("\"all\":" + gson.toJson(currentHighScores.getAllTime()));
+    resp.getWriter().print("({");
+    resp.getWriter().print("\'all\': " + gson.toJson(currentHighScores.getAllTime()));
     resp.getWriter().println(",");
-    resp.getWriter().print("\"hour\":" + gson.toJson(currentHighScores.getPastHour()));
-    resp.getWriter().print("]");
+    resp.getWriter().print("\'hour\': " + gson.toJson(currentHighScores.getPastHour()));
+    resp.getWriter().print("})");
   }
 
   /**
