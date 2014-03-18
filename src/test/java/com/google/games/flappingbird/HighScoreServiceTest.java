@@ -4,8 +4,14 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.*;
 
-import com.google.games.flappingbird.HighScoreServlet;
+import com.google.games.flutterybird.HighScoreServlet;
+import com.google.games.flutterybird.HighScoreSnapshot;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
@@ -26,12 +32,13 @@ import java.util.logging.Logger;
 
 public class HighScoreServiceTest {
 
-  private static final LocalServiceTestHelper helper = new LocalServiceTestHelper(
-      new LocalDatastoreServiceTestConfig().setDefaultHighRepJobPolicyUnappliedJobPercentage(100),
-      new LocalUserServiceTestConfig())
-      .setEnvIsLoggedIn(true)
-      .setEnvAuthDomain("example.com")
-      .setEnvEmail("test@example.com");
+  private static final LocalServiceTestHelper helper =
+      new LocalServiceTestHelper(
+          new LocalDatastoreServiceTestConfig(),
+          new LocalUserServiceTestConfig())
+        .setEnvIsLoggedIn(true)
+        .setEnvAuthDomain("example.com")
+        .setEnvEmail("test@example.com");
 
   private final Logger logger = Logger.getLogger(HighScoreServiceTest.class.getName());
 
@@ -46,7 +53,32 @@ public class HighScoreServiceTest {
   }
 
   @Test
-  public void testNUnitSetUp() throws ServletException, IOException {
+  public void testNUnitSetUp() {
     assertThat(0, is(0));
+  }
+
+  @Test
+  public void testGetHighScoreSnapshot_NoData() throws IOException {
+    DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+    HighScoreService hss = new HighScoreService();
+
+    HighScoreSnapshot snapshot = hss.getHighScoreSnapshot(ds);
+    // Test there is no data, and thus none is returned.
+    assertThat(snapshot.getAllTime().size(), is(0));
+    assertThat(snapshot.getPastHour().size(), is(0));
+  }
+
+  @Test
+  public void testGetHighScoreSnapshot_SomeData() throws IOException {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    UserService userService = UserServiceFactory.getUserService();
+
+    HighScoreService hss = new HighScoreService();
+    hss.addNewScore(datastore, userService, 100);
+
+    // Assert the high score is returned.
+    HighScoreSnapshot snapshot = hss.getHighScoreSnapshot(datastore);
+    assertThat(snapshot.getAllTime().size(), is(1));
+    assertThat(snapshot.getPastHour().size(), is(1));
   }
 }
