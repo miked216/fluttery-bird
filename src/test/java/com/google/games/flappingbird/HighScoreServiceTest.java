@@ -1,4 +1,4 @@
-package com.google.games.flappingbird;
+package com.google.games.flutterybird;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
