@@ -1,4 +1,4 @@
-package com.google.games.flappingbird;
+package com.google.games.flutterybird;
 
 import com.google.appengine.api.datastore.Entity;
 

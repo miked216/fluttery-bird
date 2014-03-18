@@ -1,4 +1,4 @@
-package com.google.games.flappingbird;
+package com.google.games.flutterybird;
 
 import java.util.Date;
 import java.util.List;

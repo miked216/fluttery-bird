@@ -1,4 +1,4 @@
-package com.google.games.flappingbird;
+package com.google.games.flutterybird;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -32,7 +32,7 @@ public class UserServlet extends HttpServlet {
 
       String returnUrl = req.getParameter("returnURL");
       if (returnUrl == null) {
-        returnUrl = "http://flapping-bird.appspot.com";
+        returnUrl = "http://fluttery-bird.appspot.com";
       }
 
       boolean isLoggedIn = (currentUser != null);
