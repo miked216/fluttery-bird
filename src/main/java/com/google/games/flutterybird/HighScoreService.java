@@ -47,8 +47,8 @@ public class HighScoreService {
     }
 
     Date now = new Date();
+
     // Query for the list of the top 10 scores today.
-    // TODO(joannasmith): Sorting of this list by score might be off due to filtering by date.
     Date pastDay = new Date(now.getTime() - (1000 * 60 * 60 * 24));
     Query.Filter dayFilter =
         new Query.FilterPredicate("date", Query.FilterOperator.GREATER_THAN_OR_EQUAL, pastDay);
@@ -63,7 +63,6 @@ public class HighScoreService {
     }
 
     // Query for the list of the top 10 scores in the past hour.
-    // TODO(joannasmith): Sorting of this list by score might be off due to filtering by date.
     Date pastHour = new Date(now.getTime() - (1000 * 60 * 60));
     Query.Filter filter =
         new Query.FilterPredicate("date", Query.FilterOperator.GREATER_THAN_OR_EQUAL, pastHour);

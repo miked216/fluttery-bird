@@ -1,5 +1,7 @@
 package com.google.games.flutterybird;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +19,27 @@ public class HighScoreSnapshot {
     this.pastHour = pastHour;
     this.past24Hours = past24Hours;
     this.allTime = allTime;
+
+    // Fix a bug with how we are querying the datastore. Sort the lists
+    // so that score is descending.
+    Comparator<HighScore> comparator = new Comparator<HighScore>() {
+        @Override
+        public int compare(HighScore a, HighScore b) {
+          long x = a.getScore();
+          long y = b.getScore();
+          if (x == y) {
+            return 0;
+          } else if (x > y) {
+            return -1;
+          } else {
+            return 1;
+          }
+        }
+    };
+
+    Collections.sort(pastHour, comparator);
+    Collections.sort(past24Hours, comparator);
+    Collections.sort(allTime, comparator);
   }
 
   public List<HighScore> getAllTime() {
