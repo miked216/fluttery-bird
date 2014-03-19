@@ -21,4 +21,5 @@ Credits
 - Dong Nguyen, creator of the original Flappy Bird
 - [Ellison Leão](https://github.com/ellisonleao), creator of clumbsy-bird
 - [Joanna Smith](https://google.com/+JoannaGSmith), backend Servlet
-- [Chris Smith](https://github.com/chrsmith/), duct tape and WD-40 coding.
+- [Chris Smith](https://github.com/chrsmith/), duct tape and WD-40 coding, terrible sprite work.
+- [Dylan Squires](http://opengameart.org/content/several-scrolling-backgrounds-and-layerable-runners), desert background image.
