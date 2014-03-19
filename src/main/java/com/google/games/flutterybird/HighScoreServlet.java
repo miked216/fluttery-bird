@@ -44,8 +44,13 @@ public class HighScoreServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     HighScoreService hsService = new HighScoreService();
-
     DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+
+    // Add "?reset" to reset the high score list to a known state.
+    if (req.getParameter("reset") != null) {
+      // TODO(chrsmith): Implement.
+    }
+
     HighScoreSnapshot currentHighScores = hsService.getHighScoreSnapshot(datastoreService);
 
     // TODO(joannasmith): Consider extracting these into a ScoreResponse object for easier JSONing
