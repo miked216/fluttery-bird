@@ -4,6 +4,8 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -70,8 +72,8 @@ public class HighScoreService {
         .replace('>', ' ')
         .replace("script", "");
     // Create an entity to store the score data in the AppEngine Datastore.
-
-    Entity score = new Entity("HighScore");
+    Key key = KeyFactory.createKey("HighScore", name + "-" + newScore.getScore());
+    Entity score = new Entity(key);
     score.setProperty("player", name);
     score.setProperty("score", newScore.getScore());
     score.setProperty("date", newScore.getDate());

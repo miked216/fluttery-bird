@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -46,11 +47,6 @@ public class HighScoreServlet extends HttpServlet {
     HighScoreService hsService = new HighScoreService();
     DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
 
-    // Add "?reset" to reset the high score list to a known state.
-    if (req.getParameter("reset") != null) {
-      // TODO(chrsmith): Implement.
-    }
-
     HighScoreSnapshot currentHighScores = hsService.getHighScoreSnapshot(datastoreService);
 
     // TODO(joannasmith): Consider extracting these into a ScoreResponse object for easier JSONing
@@ -86,7 +82,6 @@ public class HighScoreServlet extends HttpServlet {
     String playerName = (user == null) ? "Anonymous" : user.getNickname();
 
     HighScore newScore = new HighScore(gameScore, new Date(), playerName);
-
     hsService.addNewScore(datastoreService, newScore);
   }
 }
