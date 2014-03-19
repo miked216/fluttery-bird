@@ -34,6 +34,7 @@ public class HighScoreService {
 
   public HighScoreSnapshot getHighScoreSnapshot(DatastoreService datastoreService) throws IOException {
     List<HighScore> allTimeScores = new ArrayList<HighScore>();
+    List<HighScore> past24HourScores = new ArrayList<HighScore>();
     List<HighScore> pastHourScores = new ArrayList<HighScore>();
 
     // Query for the list of the top 10 all-time scores
@@ -45,9 +46,24 @@ public class HighScoreService {
       allTimeScores.add(HighScore.fromEntity(score));
     }
 
-    // Query for the list of the top 10 scores today
-    // TODO(joannasmith): Sorting of this list by score might be off due to filtering by date.
     Date now = new Date();
+    // Query for the list of the top 10 scores today.
+    // TODO(joannasmith): Sorting of this list by score might be off due to filtering by date.
+    Date pastDay = new Date(now.getTime() - (1000 * 60 * 60 * 24));
+    Query.Filter dayFilter =
+        new Query.FilterPredicate("date", Query.FilterOperator.GREATER_THAN_OR_EQUAL, pastDay);
+    Query past24HourQuery = new Query("HighScore")
+        .setFilter(dayFilter)
+        .addSort("date", Query.SortDirection.DESCENDING)
+        .addSort("score", Query.SortDirection.DESCENDING);
+    scoreEntities = datastoreService.prepare(past24HourQuery)
+        .asList(FetchOptions.Builder.withLimit(10));
+    for (Entity score : scoreEntities) {
+      past24HourScores.add(HighScore.fromEntity(score));
+    }
+
+    // Query for the list of the top 10 scores in the past hour.
+    // TODO(joannasmith): Sorting of this list by score might be off due to filtering by date.
     Date pastHour = new Date(now.getTime() - (1000 * 60 * 60));
     Query.Filter filter =
         new Query.FilterPredicate("date", Query.FilterOperator.GREATER_THAN_OR_EQUAL, pastHour);
@@ -61,7 +77,7 @@ public class HighScoreService {
       pastHourScores.add(HighScore.fromEntity(score));
     }
 
-    return new HighScoreSnapshot(pastHourScores, allTimeScores);
+    return new HighScoreSnapshot(pastHourScores, past24HourScores, allTimeScores);
   }
 
   public void addNewScore(DatastoreService datastoreService, HighScore newScore) {

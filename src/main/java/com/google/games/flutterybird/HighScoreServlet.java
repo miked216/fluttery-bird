@@ -54,6 +54,8 @@ public class HighScoreServlet extends HttpServlet {
     resp.getWriter().print("({");
     resp.getWriter().print("\'all\': " + gson.toJson(currentHighScores.getAllTime()));
     resp.getWriter().println(",");
+    resp.getWriter().print("\'day\': " + gson.toJson(currentHighScores.getPast24Hours()));
+    resp.getWriter().println(",");
     resp.getWriter().print("\'hour\': " + gson.toJson(currentHighScores.getPastHour()));
     resp.getWriter().print("})");
   }
