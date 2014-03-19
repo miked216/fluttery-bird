@@ -11,21 +11,31 @@
 
     <!-- TODO(chrsmith): Just use AngularJS and make this "sizzle". But in the
 	 interest of time we'll build this like it's 1999. -->
-    <table class="highscoretable">
-      <tr><th></th><th>All Time</th><th>Past Hour</th></tr>
-      <tr><td>#1</td><td id="all-time-1"></td><td id="hour-1"></td></tr>
-      <tr><td>#2</td><td id="all-time-2"></td><td id="hour-2"></td></tr>
-      <tr><td>#3</td><td id="all-time-3"></td><td id="hour-3"></td></tr>
-      <tr><td>#4</td><td id="all-time-4"></td><td id="hour-4"></td></tr>
-      <tr><td>#5</td><td id="all-time-5"></td><td id="hour-5"></td></tr>
-      <tr><td>#6</td><td id="all-time-6"></td><td id="hour-6"></td></tr>
-      <tr><td>#7</td><td id="all-time-7"></td><td id="hour-7"></td></tr>
-      <tr><td>#8</td><td id="all-time-8"></td><td id="hour-8"></td></tr>
-      <tr><td>#9</td><td id="all-time-9"></td><td id="hour-9"></td></tr>
-      <tr><td>#10</td><td id="all-time-10"></td><td id="hour-10"></td></tr>
+    <table id="highscoretable" class="highscoretable">
+      <!-- Table body generated dynamically. -->
     </table>
 
     <script type="text/javascript">
+      // Build the high score table.
+      var tableHtml = '';
+      tableHtml += '<tr>\n';
+      tableHtml += '  <th></th>\n';
+      tableHtml += '  <th>All Time</th>\n';
+      tableHtml += '  <th>Past Day</th>\n';
+      tableHtml += '  <th>Past Hour</th>\n';
+      tableHtml += '</tr>';
+
+      for (var i = 1; i <= 10; i++) {
+        tableHtml += '<tr>\n';
+        tableHtml += '  <td>#' + i + '</td>\n';
+        tableHtml += '  <td id="all-time-' + i + '"></td>\n';
+        tableHtml += '  <td id="day-' + i + '"></td>\n';
+        tableHtml += '  <td id="hour-' + i + '"></td>\n';
+        tableHtml += '</tr>\n';
+      }
+      document.getElementById('highscoretable').innerHTML += tableHtml;
+
+      // Load high score information.
       window.addEventListener('load', function() {
         // TODO(chrsmith): Refactor this into a JS file, since it is duplicated.
         function getHighScores() {
@@ -45,8 +55,15 @@
           document.getElementById('all-time-' + (i+1)).innerHTML = text;
         }
 
+        var dailyScores = highScoreInfo["day"];
+        for (var i = 0; i < dailyScores.length; i++) {
+	  var highScore = dailyScores[i];
+	  var text = highScore['player'] + ' <b>' + highScore['score'] + '</b>'; 
+          document.getElementById('day-' + (i+1)).innerHTML = text;
+        }
+
         var hourlyScores = highScoreInfo["hour"];
-        for (var i = 0; i < allTimeScores.length; i++) {
+        for (var i = 0; i < hourlyScores.length; i++) {
 	  var highScore = hourlyScores[i];
 	  var text = highScore['player'] + ' <b>' + highScore['score'] + '</b>'; 
           document.getElementById('hour-' + (i+1)).innerHTML = text;
