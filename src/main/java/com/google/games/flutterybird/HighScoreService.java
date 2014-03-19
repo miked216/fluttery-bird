@@ -42,7 +42,6 @@ public class HighScoreService {
     for (Entity score : scoreEntities) {
       allTimeScores.add(HighScore.fromEntity(score));
     }
-    logger.log(Level.FINE, "All-time top 10 scores in datastore: " + allTimeScores);
 
     // Query for the list of the top 10 scores today
     // TODO(joannasmith): Sorting of this list by score might be off due to filtering by date.
@@ -59,29 +58,23 @@ public class HighScoreService {
     for (Entity score : scoreEntities) {
       pastHourScores.add(HighScore.fromEntity(score));
     }
-    logger.log(Level.FINE, "Last hour's top scores in datastore: " + pastHourScores);
 
     return new HighScoreSnapshot(pastHourScores, allTimeScores);
   }
 
-  public void addNewScore(DatastoreService datastoreService, UserService userService, int gameScore) {
-    User user = userService.getCurrentUser();
-    // If the user has signed in, we use their registered nickname, otherwise we default to Anon.
-    String name = (user != null) ? user.getNickname() : "Anonymous";
-    logger.log(Level.FINE, "User: " + name);
-
+  public void addNewScore(DatastoreService datastoreService, HighScore newScore) {
     // TODO(chris): User a proper escaping library.
-    name = name
+    String name = newScore.getPlayer()
         .replace('&', ' ')
         .replace('<', ' ')
         .replace('>', ' ')
         .replace("script", "");
     // Create an entity to store the score data in the AppEngine Datastore.
+
     Entity score = new Entity("HighScore");
     score.setProperty("player", name);
-    score.setProperty("score", gameScore);
-    score.setProperty("date", new Date());
-    logger.log(Level.FINE, "HighScore Entity: " + score);
+    score.setProperty("score", newScore.getScore());
+    score.setProperty("date", newScore.getDate());
 
     datastoreService.put(score);
   }

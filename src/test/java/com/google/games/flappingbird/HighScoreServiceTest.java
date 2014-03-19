@@ -70,11 +70,11 @@ public class HighScoreServiceTest {
 
   @Test
   public void testGetHighScoreSnapshot_SomeData() throws IOException {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    UserService userService = UserServiceFactory.getUserService();
-
+    HighScore highScore = new HighScore(100, new Date(), "Steve");
     HighScoreService hss = new HighScoreService();
-    hss.addNewScore(datastore, userService, 100);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+    hss.addNewScore(datastore, highScore);
 
     // Assert the high score is returned.
     HighScoreSnapshot snapshot = hss.getHighScoreSnapshot(datastore);

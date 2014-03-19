@@ -79,9 +79,14 @@ public class HighScoreServlet extends HttpServlet {
     }
 
     HighScoreService hsService = new HighScoreService();
-
     DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+
     UserService userService = UserServiceFactory.getUserService();
-    hsService.addNewScore(datastoreService, userService, gameScore);
+    User user = userService.getCurrentUser();
+    String playerName = (user == null) ? "Anonymous" : user.getNickname();
+
+    HighScore newScore = new HighScore(gameScore, new Date(), playerName);
+
+    hsService.addNewScore(datastoreService, newScore);
   }
 }
