@@ -75,6 +75,10 @@ public class HighScoreServlet extends HttpServlet {
     } catch (NumberFormatException e) {
       return;
     }
+    // Let's not waste datastore space on noobs.
+    if (gameScore == 0) {
+      return;
+    }
 
     HighScoreService hsService = new HighScoreService();
     DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
