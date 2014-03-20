@@ -10,7 +10,7 @@ game.GameOverScreen = me.ScreenObject.extend({
 
     // Issue new high-score submission.
     // TODO(chrsmith): Need token to prevent hacking.
-    this.postToUrl("/highscore?score=" + game.data.steps);
+    this.postToUrl("/highscore?score='" + game.data.steps + "'");
 
     // Save local data.
     this.savedData = {

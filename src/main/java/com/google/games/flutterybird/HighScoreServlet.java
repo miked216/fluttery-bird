@@ -52,11 +52,11 @@ public class HighScoreServlet extends HttpServlet {
     // TODO(joannasmith): Consider extracting these into a ScoreResponse object for easier JSONing
     resp.setContentType("text/json");
     resp.getWriter().print("({");
-    resp.getWriter().print("\'all\': " + gson.toJson(currentHighScores.getAllTime()));
+    resp.getWriter().print("  \'all\': " + gson.toJson(currentHighScores.getAllTime()));
     resp.getWriter().println(",");
-    resp.getWriter().print("\'day\': " + gson.toJson(currentHighScores.getPast24Hours()));
+    resp.getWriter().print("  \'day\': " + gson.toJson(currentHighScores.getPast24Hours()));
     resp.getWriter().println(",");
-    resp.getWriter().print("\'hour\': " + gson.toJson(currentHighScores.getPastHour()));
+    resp.getWriter().print("  \'hour\': " + gson.toJson(currentHighScores.getPastHour()));
     resp.getWriter().print("})");
   }
 
@@ -68,14 +68,15 @@ public class HighScoreServlet extends HttpServlet {
    */
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp) {
-    // If the provided score parameter isn't an integer, ignore.
     int gameScore = 0;
     try {
       gameScore = Integer.valueOf(req.getParameter("score"));
     } catch (NumberFormatException e) {
+      logger.severe("Recieved malformed game score.");
       return;
     }
-    // Let's not waste datastore space on noobs.
+
+    // So, so disappointing.
     if (gameScore == 0) {
       return;
     }
@@ -87,7 +88,11 @@ public class HighScoreServlet extends HttpServlet {
     User user = userService.getCurrentUser();
     String playerName = (user == null) ? "Anonymous" : user.getNickname();
 
-    HighScore newScore = new HighScore(gameScore, new Date(), playerName);
-    hsService.addNewScore(datastoreService, newScore);
+    try {
+      HighScore newScore = new HighScore(gameScore, new Date(), playerName);
+      hsService.addNewScore(datastoreService, newScore);
+    } catch (Exception ex) {
+      logger.log(Level.SEVERE, "Error uploading high score: " + ex.getMessage(), ex);
+    }
   }
 }

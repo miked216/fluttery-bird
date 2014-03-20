@@ -32,11 +32,12 @@ import java.util.logging.Logger;
 
 public class HighScoreServiceTest {
 
-  private static final LocalServiceTestHelper helper =
+  private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(
           new LocalDatastoreServiceTestConfig(),
           new LocalUserServiceTestConfig())
         .setEnvIsLoggedIn(true)
+        .setEnvIsAdmin(true)
         .setEnvAuthDomain("example.com")
         .setEnvEmail("test@example.com");
 
@@ -80,5 +81,23 @@ public class HighScoreServiceTest {
     HighScoreSnapshot snapshot = hss.getHighScoreSnapshot(datastore);
     assertThat(snapshot.getAllTime().size(), is(1));
     assertThat(snapshot.getPastHour().size(), is(1));
+  }
+
+  @Test
+  public void testGetHighScoreSnapshot_NonAdmin() throws IOException {
+    HighScore highScore = new HighScore(100, new Date(), "Duke");
+    HighScoreService hss = new HighScoreService();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    
+    // Make the faux user a non-admin and verify the user service throws.
+    helper.setEnvIsAdmin(false);
+    
+    try {
+      hss.addNewScore(datastore, highScore);
+      fail("High score service did not throw an exception!");
+    } catch (RuntimeException ex) {
+      // Expected. Super glad I fixed that bug! Otherwise Chris' demo
+      // would have been ruined.
+    }
   }
 }
