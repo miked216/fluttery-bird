@@ -84,7 +84,7 @@ public class HighScoreService {
     // HTTP POST "/highscore?score=999999"!
     // Fix this by only allowing application administrators to post high scores.
     UserService userService = UserServiceFactory.getUserService();
-    if (userService.getCurrentUser() != null && !userService.isUserAdmin()) {
+    if (userService.getCurrentUser() == null || !userService.isUserAdmin()) {
       throw new RuntimeException("Non-admin user attempting to upload high score!");
     }
 
