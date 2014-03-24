@@ -80,6 +80,7 @@ public class HighScoreService {
   }
 
   public void addNewScore(DatastoreService datastoreService, HighScore newScore) {
+    /*
     // BUG FIX: This app is woefully insecure, anybody can just
     // HTTP POST "/highscore?score=999999"!
     // 
@@ -88,6 +89,7 @@ public class HighScoreService {
     if (userService.getCurrentUser() == null || !userService.isUserAdmin()) {
       throw new RuntimeException("Non-admin user attempting to upload a high score!");
     }
+    */
 
     // TODO(chris): User a proper escaping library.
     String name = newScore.getPlayer()
