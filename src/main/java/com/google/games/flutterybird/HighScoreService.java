@@ -86,7 +86,7 @@ public class HighScoreService {
     // Fix this by only allowing application administrators to post high scores.
     UserService userService = UserServiceFactory.getUserService();
     if (userService.getCurrentUser() == null || !userService.isUserAdmin()) {
-	throw new RuntimeException("Non-admin user attempting to upload a high score!");
+      throw new RuntimeException("Non-admin user attempting to upload a high score!");
     }
 
     // TODO(chris): User a proper escaping library.
