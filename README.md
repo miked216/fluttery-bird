@@ -1,7 +1,7 @@
 fluttery-bird
 =============
 
-Fluttery Bird is a clone of Clumsy Bird[clumsy-bird](https://github.com/ellisonleao/clumsy-bird) which is a clone of Flappy Bird.
+Fluttery Bird is a clone of Clumsy Bird[clumsy-bird](https://github.com/ellisonleao/clumsy-bird), which in turn is a clone of Flappy Bird.
 
 New Features
 ============
