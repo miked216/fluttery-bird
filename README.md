@@ -8,6 +8,7 @@ New Features
 
 - App Engine powered high score list.
 - Maven-based build.
+- Super Awesome New features
 
 Building
 ========
